@@ -21,17 +21,36 @@ const airtimeSelfValidate= require('./self/airtime/airtime_self_validate.js');
 const airtimeSelfPin = require('./self/airtime/airtime_self_pin.js');
 const airtimeSelfEnd = require('./self/airtime/airtime_self_end.js');
 
+
+
 // require data states
 
 const data = require('./data.js');
 
+//self
+const dataSelf = require('./data/data/data_self.js');
+const dataSelfPin = require('./data/data/data_self_pin.js');
+const dataSelfEnd = require('./data/ddata_self_pin_end.js');
 
+const airtimeOthers = require('./others/airtime/airtime_others.js');
+const airtimeOthersAmount = require('./others/airtime/airtime_others_amount.js');
+const airtimeOthersValidate = require('./others/aairtime_others_amount_valodate.js');
+const airtimeOthersPin= require('.airtime_others_amount_valodate_pin.js');
+const airtimeOthersEnd = require('./others/airtime/airtime_others_end.js');
 
 const dataOthersPlan = require('./others/data/data_others_plan.js');
 const dataOthers = require('./others/data/data_others.js');
 const dataOthersPin = require('./others/data/data_others_pin.js');
 const dataOthersEnd = require('./others/data/data_others_end.js');
 
+
+const accountBalance = require('./account/account_balance.js')
+const accountInfo = require('./account/account_info.js')
+const createAccount = require('./account/create_account.js')
+const generateAccount = require('./account/generate_account.js')
+const resetPin = require('./account/reset_pin.js')
+const resetPinVerify = require('./account/reset_pin_verify.js')
+const setNewPin = require('./account/set_new_pin.js')
 // initialised onboarding states
 startMenu();
 mainMenu();
@@ -43,24 +62,44 @@ lastname();
 email();
 pin();
 
+accountBalance()
+accountInfo()
+createAccount()
+generateAccount()
+resetPin()
+resetPinVerify()
+setNewPin()
+
 // initialised airtime states
 airtime();
+
+//airtime self 
 airtimeSelf();
 airtimeSelfValidate();
 airtimeSelfPin();
 airtimeSelfEnd();
 
-// initialised airtime states
+
+//  airtime others
+
+airtimeOthers()
+airtimeOthersAmount()
+airtimeOthersValidate()
+airtimeOthersPin()
+airtimeOthersEnd()
+// initialised data states
 
 data();
 
 //data self
-
+dataSelf()
+dataSelfPin()
+dataSelfEnd()
 
 //data others
 dataOthers()
 dataOthersPlan()
-//dataOthersPin()
+dataOthersPin()
 dataOthersEnd()
 
 //console.log(ussdMenus)
