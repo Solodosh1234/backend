@@ -6,7 +6,7 @@ const airtimeSelfValidate = ()=>{
   menu.state('airtimeSelfValidate',{
     run:async()=>{
         try {
-          const {phoneNumber} = menu.args
+          const {phoneNumber,sessionId} = menu.args
           const validUser = await user.findOne({phoneNumber})
           const userBalance = validUser.balance
           if (Number(menu.val) < 50) {
