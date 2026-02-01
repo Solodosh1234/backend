@@ -4,7 +4,7 @@ const userSession = require('../../../session_store.js')
 
 const airtimeSelfValidate = ()=>{
   menu.state('airtimeSelfValidate',{
-    '':async()=>{
+    run:async()=>{
         try {
           const {phoneNumber} = menu.args
           const validUser = await user.findOne({phoneNumber})
