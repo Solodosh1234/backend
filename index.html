@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>USSD App Simulator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 420px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f4f4f4;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 12px;
+      font-size: 16px;
+    }
+
+    button {
+      background: #000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #999;
+    }
+
+    #screen {
+      background: #fff;
+      border: 2px solid #000;
+      padding: 14px;
+      min-height: 140px;
+      white-space: pre-line;
+      font-size: 15px;
+    }
+
+    #timer {
+      text-align: center;
+      font-size: 13px;
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>USSD App Simulator</h2>
+
+  <label>Phone Number</label>
+  <input id="phoneNumber" placeholder="+2348012345678" />
+
+  <label>Session ID</label>
+  <input id="sessionId" placeholder="session123" />
+
+  <label>Dial / Input</label>
+  <input id="input" placeholder="*123# or 1" />
+
+  <button id="sendBtn">Dial</button>
+
+  <div id="screen"></div>
+  <div id="timer"></div>
+
+  <script>
+    const phoneInput = document.getElementById('phoneNumber');
+    const sessionInput = document.getElementById('sessionId');
+    const userInput = document.getElementById('input');
+    const sendBtn = document.getElementById('sendBtn');
+    const screen = document.getElementById('screen');
+    const timerDiv = document.getElementById('timer');
+
+    let sessionActive = false;
+    let ussdText = '';
+    let timeoutSeconds = 40;
+    let countdown;
+
+    function renderScreen(text) {
+      screen.textContent = text;
+    }
+
+    function startTimeout() {
+      clearInterval(countdown);
+      let timeLeft = timeoutSeconds;
+      timerDiv.textContent = `Session expires in ${timeLeft}s`;
+
+      countdown = setInterval(() => {
+        timeLeft--;
+        timerDiv.textContent = `Session expires in ${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          renderScreen('Session timed out');
+          sendBtn.disabled = true;
+        }
+      }, 1000);
+    }
+
+    sendBtn.addEventListener('click', async () => {
+      const phoneNumber = phoneInput.value.trim();
+      const sessionId = sessionInput.value.trim();
+      const input = userInput.value.trim();
+
+      if (!phoneNumber || !sessionId) {
+        alert('Enter phone number and session ID');
+        return;
+      }
+
+      // START SESSION
+      if (!sessionActive) {
+        if (!input.endsWith('#')) {
+          alert('Dial a USSD code like *123#');
+          return;
+        }
+
+        sessionActive = true;
+        ussdText = '';
+        phoneInput.disabled = true;
+        sessionInput.disabled = true;
+        sendBtn.textContent = 'Send';
+        startTimeout();
+      }
+      // CONTINUE SESSION
+      else {
+        if (!input) return;
+        ussdText = ussdText ? `${ussdText}*${input}` : input;
+        startTimeout();
+      }
+
+      userInput.value = '';
+
+      try {
+        const res = await fetch('http://localhost:3000/ussd', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            sessionId,
+            serviceCode: '*123#',
+            phoneNumber,
+            text: ussdText
+          }),
+        });
+
+        const text = await res.text();
+        //alert(text)
+        if (text.startsWith('CON')) {
+          renderScreen(text.replace('CON', '').trim());
+        }
+
+        if (text.startsWith('END')) {
+          renderScreen(text.replace('END', '').trim());
+          clearInterval(countdown);
+          sendBtn.disabled = true;
+        }
+
+      } catch (err) {
+        alert('USSD Error: ' + err.message);
+      }
+    });
+  </script>
+
+</body>
+</html>
