@@ -38,7 +38,7 @@ const getTotalPages = (plans,plansPerPage)=>{
 
 
 const dataSelf =()=>{
-  menu.state('dataSelf,{
+  menu.state('dataSelf',{
     run: async()=>{
       const {sessionId,phoneNumber} = menu.args
       let page =  await userSession.get(sessionId).page || 1

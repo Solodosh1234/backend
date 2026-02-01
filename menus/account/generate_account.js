@@ -1,5 +1,5 @@
 const menu  = require('../menu.js');
-const userSession  = require('../../session_store.js);
+const userSession  = require('../../session_store.js');
 
 const generateAccount = ()=>{
   menu.state('generateAccount',{

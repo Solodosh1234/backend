@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   gender:String,
   balance:Number,
   verify:Boolean,
-  nin:String
+  nin:String,
   pin:String,
   date:Date
 });

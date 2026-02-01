@@ -36,7 +36,7 @@ const buyData = async (req, res) => {
       status: '',
       name: apiData.data_plan || '',
       type: 'data',
-      amount: api.amount  // no amount in current response, add if available
+      amount: api.amount,  // no amount in current response, add if available
       date: new Date()
     };
 

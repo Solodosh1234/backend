@@ -28,14 +28,14 @@ const airtimeSelfEnd = require('./self/airtime/airtime_self_end.js');
 const data = require('./data.js');
 
 //self
-const dataSelf = require('./data/data/data_self.js');
-const dataSelfPin = require('./data/data/data_self_pin.js');
-const dataSelfEnd = require('./data/ddata_self_pin_end.js');
+const dataSelf = require('./self/data/data_self.js');
+const dataSelfPin = require('./self/data/data_self_pin.js');
+const dataSelfEnd = require('./self/data/data_self_end.js');
 
 const airtimeOthers = require('./others/airtime/airtime_others.js');
 const airtimeOthersAmount = require('./others/airtime/airtime_others_amount.js');
-const airtimeOthersValidate = require('./others/aairtime_others_amount_valodate.js');
-const airtimeOthersPin= require('.airtime_others_amount_valodate_pin.js');
+const airtimeOthersValidate = require('./others/airtime/airtime_others_validate.js');
+const airtimeOthersPin= require('./others/airtime/airtime_others_pin.js');
 const airtimeOthersEnd = require('./others/airtime/airtime_others_end.js');
 
 const dataOthersPlan = require('./others/data/data_others_plan.js');

@@ -4,7 +4,7 @@ const userSession = require('../../../session_store.js')
 
 const dataSelfPin = ()=>{
   menu.state('dataSelfPin',{
-    run:()=>{
+    run:async()=>{
       const {sessionId}= menu.args
       const invalidPinMessage = await userSession.get(sessionId).invalidPinMessage
       if (invalidPinMessage) {

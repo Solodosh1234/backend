@@ -143,7 +143,7 @@
       userInput.value = '';
 
       try {
-        const res = await fetch('http://localhost:3000/ussd', {
+        const res = await fetch('/ussd', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({
