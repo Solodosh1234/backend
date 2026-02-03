@@ -1,5 +1,4 @@
 const menu = require('./menu.js')
-const user = require('../../models/user.js')
 
 const account = ()=>{
   menu.state('account',{

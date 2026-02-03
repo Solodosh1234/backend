@@ -11,6 +11,7 @@ const detectNetwork = (phoneNumber)=>{
 const airtimeOthersAmount = ()=>{
   menu.state('airtimeOthersAmount',{
     run:async ()=>{
+      const {sessionId} = menu.args
       let network = await userSession.get(sessionId).network
       
       if (!network) {

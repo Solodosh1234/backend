@@ -1,25 +1,29 @@
 const menu = require('./menu.js');
 const userSession = require('../session_store.js');
+const user = require('../models/user.js');
 
-const users =[{
-  phoneNumber:"+2348160315241",
-  firstname:"solomon",
-  lastname: "sheshinbwa",
-  balance:4000
-}];
 
 const startMenu = ()=>{
    menu.startState({
      next:{
-       '':()=>{
+       '': async ()=>{
         const {phoneNumber} = menu.args;
         
-        const validUser = users.find(user=> user.phoneNumber === phoneNumber);
         
-        if (validUser) {
-         return "mainMenu";
-      }
-        return "startOnboarding";
+        try {
+          
+          const validUser = await user.findOne({phoneNumber})
+          
+          if (validUser) {
+          return "mainMenu";
+          }
+          
+          return "startOnboarding";
+          
+        } catch (err) {
+          console.error('Error:', err);
+        }
+        
       }}
     });
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const connectDB = require('./db.js')
 
 const services = require('./routes/services.js');
 const ussdCallbackUrl = require('./routes/ussd.js');
@@ -18,7 +19,9 @@ app.get('/simulator',(req,res)=>{
 
 app.use(services);
 
-app.listen(3000,'0.0.0.0',async ()=>{
- // await getPlan()
-  console.log('server is running');
+
+connectDB().then(() => {
+  app.listen(3000,'0.0.0.0', () => console.log('Server running'));
+  getPlan()
 });
+

@@ -2,6 +2,7 @@ const axios = require('axios')
 require('dotenv').config()
 
 const util = axios.create({
+  baseURL:"http://localhost:3000",
   timeout: 10000,
   headers: {
     'x-secret-key': process.env.APP_SECRET_KEY

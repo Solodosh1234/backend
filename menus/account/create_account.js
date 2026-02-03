@@ -5,14 +5,13 @@ const utility = require('../utility.js');  // fixed typo from utilty to utility
 
 const createAccount = () => {  
   menu.state('createAccount', {  
-    next: {  
-      '': async () => {  
+    run: async () => {  
         try {  
           const { phoneNumber, sessionId } = menu.args;  
           const nin = menu.val;  
           
           // Wait for NIN verification result
-          const verifyResult = await utility.verifyAccount({ nin });  
+          const verifyResult = await utility.verifyAccount({ phoneNumber,nin });  
           
           if (verifyResult.data.status === 'verify') {  
             // Update user verified status and NIN
@@ -40,7 +39,7 @@ const createAccount = () => {
           menu.end('An unexpected error occurred. Please try again later.');  
         }  
       }  
-    }  
+    
   });  
 };  
 

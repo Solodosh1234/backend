@@ -44,6 +44,7 @@ const dataOthersPin = require('./others/data/data_others_pin.js');
 const dataOthersEnd = require('./others/data/data_others_end.js');
 
 
+const account = require('./account.js')
 const accountBalance = require('./account/account_balance.js')
 const accountInfo = require('./account/account_info.js')
 const createAccount = require('./account/create_account.js')
@@ -62,6 +63,7 @@ lastname();
 email();
 pin();
 
+account()
 accountBalance()
 accountInfo()
 createAccount()

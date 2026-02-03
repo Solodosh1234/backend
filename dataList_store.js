@@ -1,7 +1,7 @@
 const NodeCache = require('node-cache');
 
 const sessionCache = new NodeCache({
-  stdTTL: 100,
+  stdTTL: 7200,
   checkperiod: 10,
 });
 

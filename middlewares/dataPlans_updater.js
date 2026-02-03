@@ -6,8 +6,10 @@ const ebill_baseurl = process.env.EBILL_BASEURL
 let expiryTime = null
 
 const getPlan= async ()=>{
-  await planStore.set('dataPlans',{})
-  axios.get(`${ebill_baseurl}/api/v2/variations/data`).then( async (result)=>{
+  try {
+     await planStore.set('dataPlans',{})
+     
+     axios.get(`${ebill_baseurl}/api/v2/variations/data`).then( async (result)=>{
     const data = result.data.data
     
     const mtndatas = data.filter(mtndata=>(mtndata.service_id == 'mtn'))
@@ -30,12 +32,25 @@ const getPlan= async ()=>{
     return expiryTime = Date.now() + 3600 *1000
     
   })
+  } catch (err) {
+    console.error('Error:', err);
+    
+  }
+ 
 }
+
+const renew = function(){ 
+  setInterval(async () => {
+  await getPlan()
+}, 1000 * 7000)
+}
+
+renew()
 
 const updater = async (req,res,next)=>{
     try {
     if (!expiryTime || expiryTime - Date.now() < 10 * 60 * 1000) {
-      await sendAuthRequest();
+      await getPlan();
       return next()
     }
     next();
@@ -45,4 +60,4 @@ const updater = async (req,res,next)=>{
   }
 }
 
-module.exports = updater
+module.exports = {updater,getPlan}

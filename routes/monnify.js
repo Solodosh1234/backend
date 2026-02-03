@@ -9,7 +9,7 @@ const renewMonnifyToken = require('../middlewares/ebill_auth.js');
 monnifyWebhook.use(renewMonnifyToken);
 monnifyWebhook.post('/webhook/deposit',monnifyWebhook)
 
-//monnifyWebhook.use(verifyKey);
+monnifyWebhook.use(verifyKey);
 
 monnifyWebhook.post('/create/account',createWallet)
 monnifyWebhook.post('/verify/account',verifyAccount)

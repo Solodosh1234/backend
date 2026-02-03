@@ -10,7 +10,7 @@ const mainMenu = ()=>{
       "1":async ()=>{
         const {phoneNumber} = menu.args
         const existedUser = await user.findOne({phoneNumber})
-        if (existedUser.hasAnAccount === false) {
+        if (!existedUser.hasAnAccount) {
           return 'generateAccount'
         }
         return 'account'
