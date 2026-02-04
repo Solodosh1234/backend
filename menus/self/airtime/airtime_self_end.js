@@ -2,6 +2,7 @@ const menu = require('../../menu.js');
 const bcrypt = require('bcryptjs')
 const user = require('../../../models/user.js')
 const userSession = require('../../../session_store.js')
+const messageSession = require('../../../message.js')
 const {buyAirtime,generateTransactionId} = require('../../utility.js')
 
 const detectNetwork = (phoneNumber)=>{
@@ -20,7 +21,7 @@ const airtimeSelfEnd = ()=>{
         const pinMatch = await bcrypt.compare(menu.val,userPin)
         
         if (!pinMatch) {
-        await userSession.update(sessionId,'invalidPinMessage','Wrong pin')
+        await messageSession.update(sessionId,'airtimeSelfInvalidPinMessage','Wrong pin')
         return 'airtimeSelfPin'
         }
         

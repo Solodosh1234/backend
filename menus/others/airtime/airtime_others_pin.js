@@ -5,7 +5,7 @@ const airtimeOthersPin = ()=>{
   menu.state('airtimeOthersPin',{
     run:async ()=>{
       const {sessionId}= menu.args
-      const invalidPinMessage = await userSession.get(sessionId).invalidPinMessage
+      const invalidPinMessage = await userSession.get(sessionId).airtimeOthersInvalidPinMessage
       if (invalidPinMessage) {
         menu.con(invalidPinMessage)
       }

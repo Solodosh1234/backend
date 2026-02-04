@@ -2,6 +2,7 @@ const menu = require('../../menu.js');
 const bcrypt = require('bcryptjs')
 const user = require('../../../models/user.js')
 const userSession = require('../../../session_store.js')
+const messageSession = require('../../../message.js')
 const {buyAirtime,generateTransactionId} = require('../../utility.js')
 
 const airtimeOthersEnd = ()=>{
@@ -14,14 +15,17 @@ const airtimeOthersEnd = ()=>{
         const pinMatch = await bcrypt.compare(menu.val,userPin)
       
         if (!pinMatch) {
-        await userSession.update(sessionId,'invalidPinMessage','Wrong pin')
+        await messageSession.update(sessionId,'airtimeOthersInvalidPinMessage','Wrong pin')
         return 'airtimeOthersPin'
         }
         const userId = validUser._id
       //make purchase logic
       let request_id = await generateTransactionId()
-      let {network,phone,amount} =  await userSession.get(sessionId).amount
-      let service_id = network
+      const {amount} =  await userSession.get(sessionId)
+      const {airtimeOthersNetwork,airtimeOthersPhoneNumber} =  await messageSession.get(sessionId)
+      
+      let service_id = airtimeOthersNetwork
+      const phophone = airtimeOthersPhoneNumber
         
         buyAirtime(userId,request_id,phone,service_id,variation_id).then(result=>{
         menu.end(`Transaction status:${result.data.status} \n ${result.data.message}`)

@@ -1,6 +1,7 @@
 const menu = require('../../menu.js');
 const user = require('../../../models/user.js')
 const userSession = require('../../../session_store.js')
+const messageSession = require('../../../message.js')
 
 const airtimeSelfValidate = ()=>{
   menu.state('airtimeSelfValidate',{
@@ -10,7 +11,7 @@ const airtimeSelfValidate = ()=>{
           const validUser = await user.findOne({phoneNumber})
           const userBalance = validUser.balance
           if (Number(menu.val) < 50) {
-            await userSession.update(sessionId,'message','The minimum amount is 50 Naira')
+            await messageSession.update(sessionId,'airtimeSelfMessage','The minimum amount is 50 Naira')
             return 'airtimeSelf'
           }
           
@@ -19,7 +20,7 @@ const airtimeSelfValidate = ()=>{
           return 'airtimeSelfPin'
           }
           
-          await userSession.update(sessionId,'message','Insufficient funds. \n')
+          await userSession.update(sessionId,'airtimeSelfMessage','Insufficient funds. \n')
           return 'airtimeSelf'
         } catch (err) {
           console.error('Error:', err);

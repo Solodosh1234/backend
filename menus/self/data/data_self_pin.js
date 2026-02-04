@@ -1,5 +1,5 @@
 const menu = require('../../menu.js');
-const userSession = require('../../../session_store.js')
+const messageSession = require('../../../message.js')
 
 
 const dataSelfPin = ()=>{

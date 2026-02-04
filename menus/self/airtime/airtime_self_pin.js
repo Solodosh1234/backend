@@ -1,12 +1,12 @@
 const menu = require('../../menu.js');
-const userSession = require('../../../session_store.js')
+const messageSession = require('../../../message.js')
 
 
 const airtimeSelfPin = ()=>{
   menu.state('airtimeSelfPin',{
     run:async ()=>{
       const {sessionId}= menu.args
-      const invalidPinMessage = await userSession.get(sessionId).invalidPinMessage
+      const invalidPinMessage = await messageSession.get(sessionId).airtimeSelfInvalidPinMessage
       if (invalidPinMessage) {
         menu.con(invalidPinMessage)
       }

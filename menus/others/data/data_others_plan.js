@@ -2,6 +2,7 @@ const menu = require('../../menu.js');
 const NigeriaPhone = require('validate_nigerian_phone')
 const planStore = require('../../../dataList_store.js')
 const userSession = require('../../../session_store.js')
+const messageSession = require('../../../message.js')
 const user =require('../../../models/user.js')
 
 const PlansPerPage = 5
@@ -42,15 +43,15 @@ const dataOthersPlan =()=>{
     run: async()=>{
       const {sessionId} = menu.args
       let page =  await userSession.get(sessionId).page || 1
-      let network = await userSession.get(sessionId).network
+      let network = await messageSession.get(sessionId).dataOthersNetwork
       
       if (!network) {
           network = await detectNetwork(menu.val)
           if (!network) {
             return menu.con('Invalid network \n 0. Back')
           }
-          await userSession.update(sessionId,'phone',menu.val)
-          await userSession.update(sessionId,'network',network)
+          await messageSession.update(sessionId,'dataOthersPhoneNumber',menu.val)
+          await messageSession.update(sessionId,'dataOthersNetwork',network)
       }
       
       const dataPlans = planStore.get('dataPlans');
@@ -91,7 +92,7 @@ const dataOthersPlan =()=>{
       if (hasPrev) response += '8. Previous\n';
       response += '0. Back';
       
-      let message = await userSession.get(sessionId).message
+      let message = await messageSession.get(sessionId).dataOthersMessage
       
       
       menu.con(!message? response : message + response);
@@ -132,7 +133,7 @@ const dataOthersPlan =()=>{
 
     const session = await userSession.get(sessionId) || {};
     const page = session.page || 1;
-    const network = session.network;
+    const network = messageSession.dataOthersNetwork;
 
     const dataPlans = planStore.get('dataPlans');
     let plan = [];
@@ -161,7 +162,7 @@ const dataOthersPlan =()=>{
         return 'dataOthersPin'
       }
       
-    await  userSession.update(sessionId,'message','Insufficient balance \n')
+    await  messageSession.update(sessionId,'dataOthersMessage','Insufficient balance \n')
       return 'dataOthersPlan'
     }
     return menu.con('Invalid choice\n0. Back');

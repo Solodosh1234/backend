@@ -1,11 +1,11 @@
 const menu = require('../../menu.js');
-const userSession = require('../../../session_store.js')
+const message = require('../../../message.js')
 
 const dataOthersPin =()=>{
   menu.state('dataOthersPin',{
     run:async ()=>{
       const {sessionId}= menu.args
-      const invalidPinMessage = await userSession.get(sessionId).invalidPinMessage
+      const invalidPinMessage = await message.get(sessionId).dataOthersInvalidPinMessage
       if (invalidPinMessage) {
         menu.con(invalidPinMessage)
       }

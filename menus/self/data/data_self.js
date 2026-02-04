@@ -2,6 +2,7 @@ const menu = require('../../menu.js');
 const NigeriaPhone = require('validate_nigerian_phone')
 const planStore = require('../../../dataList_store.js')
 const userSession = require('../../../session_store.js')
+const messageSession = require('../../../message.js')
 const user =require('../../../models/user.js')
 
 const PlansPerPage = 5
@@ -42,15 +43,15 @@ const dataSelf =()=>{
     run: async()=>{
       const {sessionId,phoneNumber} = menu.args
       let page =  await userSession.get(sessionId).page || 1
-      let network = await userSession.get(sessionId).network
+      let network = await messageSession.get(sessionId).dataSelfNetwork
       
       if (!network) {
           network = await detectNetwork(phoneNumber)
           if (!network) {
             return menu.con('Invalid network \n 0. Back')
           }
-          await userSession.update(sessionId,'phone',phoneNumber)
-          await userSession.update(sessionId,'network',network)
+          await messageSession.update(sessionId,'dataSelfPhoneNumber',phoneNumber)
+          await messageSession.update(sessionId,'dataSelfNetwork',network)
       }
       
       const dataPlans = planStore.get('dataPlans');
@@ -91,7 +92,7 @@ const dataSelf =()=>{
       if (hasPrev) response += '8. Previous\n';
       response += '0. Back';
       
-      let message = await userSession.get(sessionId).message
+      let message = await messageSession.get(sessionId).dataSelfMessage
       
       
       menu.con(!message? response : message + response);
@@ -161,7 +162,7 @@ const dataSelf =()=>{
         return 'dataSelfPin'
       }
       
-    await  userSession.update(sessionId,'message','Insufficient balance \n')
+    await  userSession.update(sessionId,'dataSelfMessage','Insufficient balance \n')
       return 'dataSelf'
     }
     return menu.con('Invalid choice\n0. Back');
